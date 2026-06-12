@@ -1,0 +1,2 @@
+[build]
+  publish = "."   # Publica a raiz do repositório (onde fica o index.html)

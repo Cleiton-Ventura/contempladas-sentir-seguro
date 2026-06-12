@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sentir Seguro Corretora — Cartas Contempladas</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue: #1a4e8a; --blue-light: #2471c8;
+      --orange: #b85c00; --orange-light: #e07820;
+      --green-light: #27ae60; --accent: #f0a500;
+      --bg: #f2f5f9; --white: #ffffff;
+      --text: #1c2b3a; --muted: #6c7a8a; --border: #dce3ec;
+      --shadow: 0 2px 14px rgba(0,0,0,.08); --radius: 12px;
+    }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
+
+    header { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%); color: #fff; padding: 14px 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 12px rgba(0,0,0,.2); }
+    .header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+    .brand { display: flex; align-items: center; gap: 14px; }
+    .brand-logo { height: 44px; width: auto; display: block; }
+    .brand-divider { width: 1px; height: 36px; background: rgba(255,255,255,.35); }
+    .brand-sub { font-size: .8rem; opacity: .85; font-weight: 400; line-height: 1.3; }
+    .brand h1 { font-size: 1.25rem; font-weight: 700; }
+    .brand p  { font-size: .78rem; opacity: .8; margin-top: 2px; }
+    #last-updated { font-size: .75rem; opacity: .75; }
+
+    main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 40px; }
+
+    .filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
+    .tabs { display: flex; background: var(--white); border-radius: 10px; padding: 4px; box-shadow: var(--shadow); gap: 4px; flex-wrap: wrap; }
+    .tab { padding: 7px 16px; border: none; border-radius: 7px; cursor: pointer; font-size: .85rem; font-weight: 500; background: transparent; color: var(--muted); transition: all .2s; white-space: nowrap; }
+    .tab.active { background: var(--blue); color: #fff; }
+    .search-wrap { flex: 1; min-width: 180px; max-width: 280px; }
+    .search-wrap input { width: 100%; padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: .85rem; outline: none; background: var(--white); box-shadow: var(--shadow); }
+    .search-wrap input:focus { border-color: var(--blue-light); }
+
+    .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
+    .stat { background: var(--white); border-radius: 10px; padding: 10px 18px; box-shadow: var(--shadow); font-size: .78rem; color: var(--muted); }
+    .stat strong { display: block; font-size: 1.35rem; font-weight: 700; color: var(--blue); line-height: 1.1; }
+    .stat.stat-resv strong { color: var(--orange); }
+
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 16px; }
+
+    .card { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); display: flex; flex-direction: column; overflow: hidden; transition: transform .2s, box-shadow .2s; position: relative; }
+    .card:hover { transform: translateY(-3px); box-shadow: 0 8px 24px rgba(0,0,0,.13); }
+
+    .card-overlay { position: absolute; inset: 0; background: repeating-linear-gradient(135deg, transparent, transparent 10px, rgba(0,0,0,.025) 10px, rgba(0,0,0,.025) 11px); pointer-events: none; z-index: 1; border-radius: var(--radius); }
+
+    .card-top { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%); padding: 13px 14px; display: flex; align-items: center; justify-content: space-between; gap: 10px; position: relative; z-index: 2; }
+    .card-top-reservada { background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%); }
+
+    .card-admin { display: flex; align-items: center; gap: 10px; }
+    .admin-logo { width: 38px; height: 38px; object-fit: contain; background: #fff; border-radius: 7px; padding: 3px; flex-shrink: 0; }
+    .admin-fallback { width: 38px; height: 38px; background: rgba(255,255,255,.2); border-radius: 7px; display: flex; align-items: center; justify-content: center; font-size: .62rem; font-weight: 700; color: #fff; text-align: center; flex-shrink: 0; }
+    .admin-name { font-weight: 700; color: #fff; font-size: .9rem; }
+    .admin-sub  { font-size: .7rem; color: rgba(255,255,255,.65); margin-top: 1px; }
+
+    .card-badges { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
+    .badge { font-size: .68rem; font-weight: 600; padding: 3px 9px; border-radius: 20px; white-space: nowrap; }
+    .badge-seg  { background: rgba(255,255,255,.2); color: #fff; }
+    .badge-disp { background: #2ecc71; color: #0b4a22; }
+    .badge-resv { background: #fff3cd; color: #7a4800; }
+
+    .card-body { padding: 16px; flex: 1; position: relative; z-index: 2; }
+    .credito-val   { font-size: 1.45rem; font-weight: 700; color: var(--blue); line-height: 1; }
+    .credito-label { font-size: .72rem; color: var(--muted); font-weight: 400; margin-left: 4px; }
+    .divider { height: 1px; background: var(--border); margin: 12px 0; }
+    .row { display: flex; justify-content: space-between; align-items: baseline; padding: 5px 0; font-size: .83rem; }
+    .row + .row { border-top: 1px solid #f0f3f7; }
+    .row-label { color: var(--muted); font-size: .75rem; }
+    .row-val   { font-weight: 600; text-align: right; }
+    .row-val.highlight { color: var(--green-light); font-size: .95rem; }
+
+    .card-foot { padding: 12px 14px; border-top: 1px solid var(--border); position: relative; z-index: 2; }
+
+    .btn-wpp { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; color: #fff; font-size: .87rem; font-weight: 700; padding: 11px; border-radius: 8px; border: none; cursor: pointer; text-decoration: none; transition: opacity .2s; }
+    .btn-wpp:hover { opacity: .9; }
+    .btn-wpp:not(.btn-espera) { background: linear-gradient(135deg, #25d366 0%, #128c7e 100%); }
+    .btn-espera { background: linear-gradient(135deg, var(--orange) 0%, var(--orange-light) 100%); font-size: .82rem; }
+
+    .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: .9rem; }
+    .disclaimer { background: #fff8e1; border-left: 3px solid var(--accent); border-radius: 6px; padding: 10px 14px; font-size: .76rem; color: #5a4000; margin-top: 28px; line-height: 1.5; }
+
+    footer { text-align: center; padding: 24px; font-size: .75rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 32px; }
+
+    @media (max-width: 600px) {
+      .brand h1 { font-size: 1rem; }
+      .grid { grid-template-columns: 1fr; }
+      .filter-bar { flex-direction: column; align-items: stretch; }
+      .search-wrap { max-width: 100%; }
+    }
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-inner">
+    <div class="brand">
+      <img class="brand-logo" src="logo.png" alt="Sentir Seguro Corretora" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+      <div style="display:none">
+        <h1>🛡️ Sentir Seguro Corretora</h1>
+        <p>Cartas Contempladas</p>
+      </div>
+      <div class="brand-divider"></div>
+      <span class="brand-sub">Cartas Contempladas<br>Imóvel &amp; Veículo</span>
+    </div>
+    <span id="last-updated">Atualizado em 12/06/2026 às 18:00</span>
+  </div>
+</header>
+
+<main>
+  <div class="filter-bar">
+    <div class="tabs">
+      <button class="tab active" data-tab="todos"      onclick="setTab(this)">Todos</button>
+      <button class="tab"        data-tab="disponivel" onclick="setTab(this)">✅ Disponíveis</button>
+      <button class="tab"        data-tab="reservada"  onclick="setTab(this)">🔒 Reservadas</button>
+      <button class="tab"        data-tab="imovel"     onclick="setTab(this)">🏠 Imóvel</button>
+      <button class="tab"        data-tab="veiculo"    onclick="setTab(this)">🚗 Veículo</button>
+    </div>
+    <div class="search-wrap">
+      <input type="text" id="search" placeholder="Buscar administradora…" oninput="render()">
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><strong>18</strong>Total</div>
+    <div class="stat"><strong>4</strong>Disponíveis</div>
+    <div class="stat stat-resv"><strong>14</strong>Reservadas</div>
+    <div class="stat"><strong>7</strong>Imóveis</div>
+    <div class="stat"><strong>11</strong>Veículos</div>
+    <div class="stat" id="stat-exibindo"><strong>18</strong>Exibindo</div>
+  </div>
+
+  <div id="content">
+    <div class="grid" id="grid">
+
+<!-- ════════════════════════════════════════════════════
+     DISPONÍVEIS (4)
+     ════════════════════════════════════════════════════ -->
+
+<!-- Gauer 144 — Itaú / Veículo / Disponível -->
+<div class="card" data-seg="veículo" data-status="disponivel">
+  <div class="card-top">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/itauconsorcio.png" alt="Itaú" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">IT</div>
+      <div><div class="admin-name">Itaú</div><div class="admin-sub">Cód. 144 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-disp">✓ Disponível</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 84.619,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 35.077,57</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">58 x R$ 1.578,46</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 91.550,68</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 650,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">15/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Tenho+interesse+nesta+Carta+Contemplada%3A%0AAdministradora%3A+Ita%C3%BA+%7C+C%C3%B3d.+144+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+84.619%2C00+%7C+Entrada%3A+R%24+35.077%2C57" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Negociar no WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 145 — Itaú / Veículo / Disponível -->
+<div class="card" data-seg="veículo" data-status="disponivel">
+  <div class="card-top">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/itauconsorcio.png" alt="Itaú" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">IT</div>
+      <div><div class="admin-name">Itaú</div><div class="admin-sub">Cód. 145 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-disp">✓ Disponível</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 84.619,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 31.756,07</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">58 x R$ 1.578,46</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 91.550,68</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 650,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">15/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Tenho+interesse+nesta+Carta+Contemplada%3A%0AAdministradora%3A+Ita%C3%BA+%7C+C%C3%B3d.+145+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+84.619%2C00+%7C+Entrada%3A+R%24+31.756%2C07" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Negociar no WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 133 — Magalu / Veículo / Disponível -->
+<div class="card" data-seg="veículo" data-status="disponivel">
+  <div class="card-top">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 133 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-disp">✓ Disponível</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 44.360,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 20.561,80</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">58 x R$ 808,29</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 46.880,82</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 600,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Tenho+interesse+nesta+Carta+Contemplada%3A%0AAdministradora%3A+Magalu+%7C+C%C3%B3d.+133+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+44.360%2C00+%7C+Entrada%3A+R%24+20.561%2C80" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Negociar no WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 139 — Itaú / Veículo / Disponível -->
+<div class="card" data-seg="veículo" data-status="disponivel">
+  <div class="card-top">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/itauconsorcio.png" alt="Itaú" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">IT</div>
+      <div><div class="admin-name">Itaú</div><div class="admin-sub">Cód. 139 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-disp">✓ Disponível</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 28.133,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 16.063,99</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">48 x R$ 734,78</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 35.269,44</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 400,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">15/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Tenho+interesse+nesta+Carta+Contemplada%3A%0AAdministradora%3A+Ita%C3%BA+%7C+C%C3%B3d.+139+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+28.133%2C00+%7C+Entrada%3A+R%24+16.063%2C99" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Negociar no WhatsApp
+    </a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     RESERVADAS — VEÍCULO / Gauer (9)
+     ════════════════════════════════════════════════════ -->
+
+<!-- Gauer 130 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 130 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 74.736,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 33.232,08</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">54 x R$ 1.296,90</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 70.032,60</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 1.000,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+130+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+74.736%2C00+%7C+Entrada%3A+R%24+33.232%2C08" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 146 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 146 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 74.232,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 31.126,96</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">48 x R$ 1.514,16</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 72.679,68</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 1.000,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+146+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+74.232%2C00+%7C+Entrada%3A+R%24+31.126%2C96" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 126 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 126 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 44.763,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 19.842,89</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">54 x R$ 752,09</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 40.612,86</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 600,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+126+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+44.763%2C00+%7C+Entrada%3A+R%24+19.842%2C89" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 135 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 135 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 44.360,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 18.230,80</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">54 x R$ 823,98</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 44.494,92</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 600,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+135+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+44.360%2C00+%7C+Entrada%3A+R%24+18.230%2C80" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 136 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 136 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 44.360,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 20.230,80</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">54 x R$ 761,99</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 41.147,46</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 600,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+136+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+44.360%2C00+%7C+Entrada%3A+R%24+20.230%2C80" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 138 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 138 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 44.360,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 20.230,80</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">58 x R$ 715,02</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 41.471,16</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 600,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+138+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+44.360%2C00+%7C+Entrada%3A+R%24+20.230%2C80" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 147 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 147 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 36.857,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 15.005,71</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">49 x R$ 741,29</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 36.323,21</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 500,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+147+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+36.857%2C00+%7C+Entrada%3A+R%24+15.005%2C71" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 131 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 131 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 36.838,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 14.605,14</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">49 x R$ 741,29</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 36.323,21</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 500,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+131+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+36.838%2C00+%7C+Entrada%3A+R%24+14.605%2C14" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- Gauer 132 — Magalu / Veículo / Reservada -->
+<div class="card" data-seg="veículo" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 132 · Gauer</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🚗 Veículo</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 36.838,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 15.605,14</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">54 x R$ 686,65</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 37.079,10</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 500,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+132+%7C+Ve%C3%ADculo%0ACr%C3%A9dito%3A+R%24+36.838%2C00+%7C+Entrada%3A+R%24+15.605%2C14" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     RESERVADAS — IMÓVEL / ContemplaSul (5)
+     ════════════════════════════════════════════════════ -->
+
+<!-- ContemplaSul 619 — Magalu / Imóvel / Reservada -->
+<div class="card" data-seg="imóvel" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 619 · ContemplaSul</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🏠 Imóvel</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 159.180,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 69.675,40</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">199 x R$ 1.007,50</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 200.492,50</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 2.144,40</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/05/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+619+%7C+Im%C3%B3vel%0ACr%C3%A9dito%3A+R%24+159.180%2C00+%7C+Entrada%3A+R%24+69.675%2C40" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- ContemplaSul 624 — Magalu / Imóvel / Reservada -->
+<div class="card" data-seg="imóvel" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 624 · ContemplaSul</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🏠 Imóvel</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 159.180,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 69.675,40</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">145 x R$ 1.265,50</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 183.497,50</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 2.144,40</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/05/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+624+%7C+Im%C3%B3vel%0ACr%C3%A9dito%3A+R%24+159.180%2C00+%7C+Entrada%3A+R%24+69.675%2C40" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- ContemplaSul 639 — Magalu / Imóvel / Reservada -->
+<div class="card" data-seg="imóvel" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 639 · ContemplaSul</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🏠 Imóvel</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 104.370,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 43.031,10</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">197 x R$ 588,15</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 115.865,55</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 1.500,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/05/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+639+%7C+Im%C3%B3vel%0ACr%C3%A9dito%3A+R%24+104.370%2C00+%7C+Entrada%3A+R%24+43.031%2C10" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- ContemplaSul 631 — Magalu / Imóvel / Reservada -->
+<div class="card" data-seg="imóvel" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 631 · ContemplaSul</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🏠 Imóvel</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 99.900,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 42.897,00</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">173 x R$ 676,30</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 116.999,90</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 1.354,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/05/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+631+%7C+Im%C3%B3vel%0ACr%C3%A9dito%3A+R%24+99.900%2C00+%7C+Entrada%3A+R%24+42.897%2C00" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+<!-- ContemplaSul 618 — Magalu / Imóvel / Reservada -->
+<div class="card" data-seg="imóvel" data-status="reservada">
+  <div class="card-overlay"></div>
+  <div class="card-top card-top-reservada">
+    <div class="card-admin">
+      <img class="admin-logo" src="https://gauerconsorcios.contempladas.net/public/media/images/logos/administradoras/magalu.png" alt="Magalu" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
+      <div class="admin-fallback" style="display:none">MG</div>
+      <div><div class="admin-name">Magalu</div><div class="admin-sub">Cód. 618 · ContemplaSul</div></div>
+    </div>
+    <div class="card-badges">
+      <span class="badge badge-seg">🏠 Imóvel</span>
+      <span class="badge badge-resv">🔒 Reservada</span>
+    </div>
+  </div>
+  <div class="card-body">
+    <div><span class="credito-val">R$ 83.670,00</span><span class="credito-label">de crédito</span></div>
+    <div class="divider"></div>
+    <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 36.410,10</span></div>
+    <div class="row"><span class="row-label">Parcelas</span><span class="row-val">167 x R$ 580,85</span></div>
+    <div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 97.001,95</span></div>
+    <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 1.130,00</span></div>
+    <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/05/2026</span></div>
+  </div>
+  <div class="card-foot">
+    <a class="btn-wpp btn-espera" href="https://api.whatsapp.com/send?phone=5583987253467&text=Ol%C3%A1%21+Gostaria+de+entrar+na+lista+de+espera%3A%0AMagalu+%7C+C%C3%B3d.+618+%7C+Im%C3%B3vel%0ACr%C3%A9dito%3A+R%24+83.670%2C00+%7C+Entrada%3A+R%24+36.410%2C10" target="_blank" rel="noopener">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"/></svg>
+      Entrar na lista de espera
+    </a>
+  </div>
+</div>
+
+    </div><!-- /grid -->
+  </div>
+
+  <div class="disclaimer">
+    ⚠️ Todas as informações devem ser <strong>confirmadas com nossa equipe comercial</strong> antes de qualquer contratação.
+    Os valores de entrada apresentados incluem taxa de intermediação. Dados sujeitos a alteração sem aviso prévio.
+  </div>
+</main>
+
+<footer>
+  <p>Sentir Seguro Corretora &bull; (83) 9 8725-3467 &bull; Página atualizada diariamente</p>
+</footer>
+
+<script>
+let activeTab = 'todos';
+function setTab(btn) {
+  activeTab = btn.dataset.tab;
+  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
+function render() {
+  const q = (document.getElementById('search').value || '').toLowerCase().trim();
+  let visible = 0;
+  document.querySelectorAll('.card').forEach(card => {
+    const seg    = card.dataset.seg    || '';
+    const status = card.dataset.status || '';
+    const name   = card.querySelector('.admin-name')?.textContent.toLowerCase() || '';
+    let show = true;
+    if (activeTab === 'disponivel' && status !== 'disponivel') show = false;
+    if (activeTab === 'reservada'  && status !== 'reservada')  show = false;
+    if (activeTab === 'imovel'     && !seg.includes('im'))     show = false;
+    if (activeTab === 'veiculo'    && !seg.includes('ve'))     show = false;
+    if (q && !name.includes(q) && !seg.includes(q))           show = false;
+    card.style.display = show ? '' : 'none';
+    if (show) visible++;
+  });
+  const el = document.getElementById('stat-exibindo');
+  if (el) el.querySelector('strong').textContent = visible;
+}
+</script>
+</body>
+</html>

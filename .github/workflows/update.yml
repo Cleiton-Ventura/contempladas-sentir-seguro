@@ -1,0 +1,42 @@
+name: Atualizar Cartas Contempladas
+
+on:
+  schedule:
+    # Roda todo dia às 8h, 12h e 18h (horário de Brasília = UTC-3)
+    - cron: '0 11 * * *'   # 08:00 BRT
+    - cron: '0 15 * * *'   # 12:00 BRT
+    - cron: '0 21 * * *'   # 18:00 BRT
+  workflow_dispatch:        # Permite rodar manualmente pelo GitHub
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write       # Necessário para fazer commit
+
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Instalar dependências
+        run: pip install requests
+
+      - name: Gerar index.html atualizado
+        run: python generate.py
+
+      - name: Commit e push se houver mudanças
+        run: |
+          git config --global user.name  "GitHub Actions Bot"
+          git config --global user.email "actions@github.com"
+          git add index.html
+          if git diff --staged --quiet; then
+            echo "Nenhuma mudança detectada — index.html já está atualizado."
+          else
+            git commit -m "Atualização automática: $(date '+%d/%m/%Y %H:%M BRT')"
+            git push
+          fi
