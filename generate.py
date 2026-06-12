@@ -17,11 +17,11 @@ OUTPUT    = 'index.html'
 
 SOURCES = [
     {'url': 'https://contempladas.contemplasul.com.br/?segmento=imovel',
-     'fonte': 'ContemplaSul', 'seg_fallback': 'Imóvel'},
+     'fonte': 'CS', 'seg_fallback': 'Imóvel'},
     {'url': 'https://contempladas.contemplasul.com.br/?segmento=veiculo',
-     'fonte': 'ContemplaSul', 'seg_fallback': 'Veículo'},
+     'fonte': 'CS', 'seg_fallback': 'Veículo'},
     {'url': 'https://contempladas.gauerconsorcios.com.br/?segmento=veiculo',
-     'fonte': 'Gauer', 'seg_fallback': 'Veículo'},
+     'fonte': 'GR', 'seg_fallback': 'Veículo'},
 ]
 
 HEADERS = {
