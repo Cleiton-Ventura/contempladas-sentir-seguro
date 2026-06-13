@@ -15,23 +15,34 @@
       --shadow: 0 2px 14px rgba(0,0,0,.08); --radius: 12px;
     }
     body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
-    header { background: linear-gradient(135deg, var(--blue) 0%, var(--blue-light) 100%); color: #fff; padding: 14px 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 3px 12px rgba(0,0,0,.2); }
-    .header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
-    .brand { display: flex; align-items: center; gap: 14px; }
-    .brand-logo { height: 44px; width: auto; display: block; }
-    .brand-divider { width: 1px; height: 36px; background: rgba(255,255,255,.35); }
-    .brand-sub { font-size: .8rem; opacity: .85; font-weight: 400; line-height: 1.3; }
-    .brand h1 { font-size: 1.25rem; font-weight: 700; }
-    .brand p  { font-size: .78rem; opacity: .8; margin-top: 2px; }
-    #last-updated { font-size: .75rem; opacity: .75; }
-    main { max-width: 1280px; margin: 0 auto; padding: 24px 16px 40px; }
-    .filter-bar { display: flex; gap: 10px; align-items: center; margin-bottom: 18px; flex-wrap: wrap; }
-    .tabs { display: flex; background: var(--white); border-radius: 10px; padding: 4px; box-shadow: var(--shadow); gap: 4px; }
-    .tab { padding: 7px 16px; border: none; border-radius: 7px; cursor: pointer; font-size: .85rem; font-weight: 500; background: transparent; color: var(--muted); transition: all .2s; white-space: nowrap; }
-    .tab.active { background: var(--blue); color: #fff; }
-    .search-wrap { flex: 1; min-width: 180px; max-width: 280px; }
-    .search-wrap input { width: 100%; padding: 8px 14px; border: 1px solid var(--border); border-radius: 8px; font-size: .85rem; outline: none; background: var(--white); box-shadow: var(--shadow); }
-    .search-wrap input:focus { border-color: var(--blue-light); }
+
+    /* ── Header ── */
+    header { background: linear-gradient(135deg, #0f3460 0%, var(--blue) 50%, var(--blue-light) 100%); color: #fff; padding: 16px 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,.25); }
+    .header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .brand { display: flex; align-items: center; gap: 16px; min-width: 0; }
+    .brand-logo { height: 48px; width: auto; display: block; flex-shrink: 0; }
+    .brand-text { min-width: 0; }
+    .brand-title { font-size: 1rem; font-weight: 700; color: #fff; opacity: .95; white-space: nowrap; }
+    .brand-sub { font-size: .78rem; color: rgba(255,255,255,.7); margin-top: 2px; white-space: nowrap; }
+    .header-right { display: flex; flex-direction: column; align-items: flex-end; gap: 2px; flex-shrink: 0; }
+    .header-badge { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); border-radius: 20px; padding: 4px 12px; font-size: .72rem; font-weight: 600; color: rgba(255,255,255,.9); white-space: nowrap; }
+    #last-updated { font-size: .68rem; color: rgba(255,255,255,.55); }
+
+    /* ── Barra de filtros ── */
+    main { max-width: 1280px; margin: 0 auto; padding: 20px 16px 40px; }
+    .filter-section { background: var(--white); border-radius: 14px; box-shadow: var(--shadow); padding: 14px 16px; margin-bottom: 20px; }
+    .filter-top { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
+    .filter-title { font-size: .7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+    .search-wrap { flex: 1; min-width: 180px; max-width: 320px; position: relative; }
+    .search-wrap input { width: 100%; padding: 9px 14px 9px 36px; border: 1.5px solid var(--border); border-radius: 8px; font-size: .88rem; outline: none; background: var(--bg); color: var(--text); transition: border-color .2s; }
+    .search-wrap input:focus { border-color: var(--blue-light); background: #fff; }
+    .search-wrap::before { content: '🔍'; position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: .8rem; pointer-events: none; }
+    .tabs-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
+    .tabs-scroll::-webkit-scrollbar { display: none; }
+    .tabs { display: flex; gap: 8px; padding-bottom: 2px; }
+    .tab { padding: 9px 18px; border: 2px solid var(--border); border-radius: 25px; cursor: pointer; font-size: .88rem; font-weight: 600; background: var(--bg); color: var(--muted); transition: all .18s; white-space: nowrap; flex-shrink: 0; }
+    .tab:hover { border-color: var(--blue-light); color: var(--blue); background: #eef4ff; }
+    .tab.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 3px 10px rgba(26,78,138,.35); }
     .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
     .stat { background: var(--white); border-radius: 10px; padding: 10px 18px; box-shadow: var(--shadow); font-size: .78rem; color: var(--muted); }
     .stat strong { display: block; font-size: 1.35rem; font-weight: 700; color: var(--blue); line-height: 1.1; }
@@ -69,11 +80,20 @@
     .empty { text-align: center; padding: 60px 20px; color: var(--muted); font-size: .9rem; }
     .disclaimer { background: #fff8e1; border-left: 3px solid var(--accent); border-radius: 6px; padding: 10px 14px; font-size: .76rem; color: #5a4000; margin-top: 28px; line-height: 1.5; }
     footer { text-align: center; padding: 24px; font-size: .75rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 32px; }
-    @media (max-width: 600px) {
-      .brand h1 { font-size: 1rem; }
-      .grid { grid-template-columns: 1fr; }
-      .filter-bar { flex-direction: column; align-items: stretch; }
+    @media (max-width: 640px) {
+      header { padding: 12px 16px; }
+      .brand-logo { height: 38px; }
+      .brand-title { font-size: .88rem; }
+      .brand-sub { display: none; }
+      .header-badge { display: none; }
+      #last-updated { font-size: .65rem; }
+      .filter-top { flex-direction: column; align-items: stretch; }
       .search-wrap { max-width: 100%; }
+      .tab { padding: 8px 14px; font-size: .82rem; }
+      .grid { grid-template-columns: 1fr; }
+      .stats { gap: 8px; }
+      .stat { padding: 8px 14px; }
+      .stat strong { font-size: 1.15rem; }
     }
   </style>
 </head>
@@ -82,28 +102,37 @@
   <div class="header-inner">
     <div class="brand">
       <img class="brand-logo" src="logo.png" alt="Sentir Seguro Corretora" onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
-      <div style="display:none">
-        <h1>&#x1F6E1;&#xFE0F; Sentir Seguro Corretora</h1>
-        <p>Cartas Contempladas</p>
+      <div style="display:none" class="brand-text">
+        <div class="brand-title">Sentir Seguro Corretora</div>
       </div>
-      <div class="brand-divider"></div>
-      <span class="brand-sub">Cartas Contempladas<br>Im&oacute;vel &amp; Ve&iacute;culo</span>
+      <div class="brand-text">
+        <div class="brand-title">Cartas Contempladas</div>
+        <div class="brand-sub">Imóvel &amp; Veículo</div>
+      </div>
     </div>
-    <span id="last-updated">Atualizado em 13/06/2026 às 10:00</span>
+    <div class="header-right">
+      <span class="header-badge">34 cotas disponíveis</span>
+      <span id="last-updated">Atualizado em 13/06/2026 às 10:00</span>
+    </div>
   </div>
 </header>
 
 <main>
-  <div class="filter-bar">
-    <div class="tabs">
-      <button class="tab active" data-tab="todos"      onclick="setTab(this)">Todos</button>
-      <button class="tab"        data-tab="disponivel" onclick="setTab(this)">✅ Disponíveis</button>
-      <button class="tab"        data-tab="reservada"  onclick="setTab(this)">🔒 Reservadas</button>
-      <button class="tab"        data-tab="imovel"     onclick="setTab(this)">🏠 Imóvel</button>
-      <button class="tab"        data-tab="veiculo"    onclick="setTab(this)">🚗 Veículo</button>
+  <div class="filter-section">
+    <div class="filter-top">
+      <span class="filter-title">Filtrar por</span>
+      <div class="search-wrap">
+        <input type="text" id="search" placeholder="Buscar administradora…" oninput="render()">
+      </div>
     </div>
-    <div class="search-wrap">
-      <input type="text" id="search" placeholder="Buscar administradora…" oninput="render()">
+    <div class="tabs-scroll">
+      <div class="tabs">
+        <button class="tab active" data-tab="todos"      onclick="setTab(this)">Todos</button>
+        <button class="tab"        data-tab="disponivel" onclick="setTab(this)">✅ Disponíveis</button>
+        <button class="tab"        data-tab="reservada"  onclick="setTab(this)">🔒 Reservadas</button>
+        <button class="tab"        data-tab="imovel"     onclick="setTab(this)">🏠 Imóvel</button>
+        <button class="tab"        data-tab="veiculo"    onclick="setTab(this)">🚗 Veículo</button>
+      </div>
     </div>
   </div>
 
