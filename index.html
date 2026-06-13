@@ -34,13 +34,21 @@
     .filter-group { display: flex; flex-direction: column; gap: 8px; }
     .filter-label { font-size: .68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
     .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tab { padding: 8px 16px; border: 2px solid var(--border); border-radius: 25px; cursor: pointer; font-size: .85rem; font-weight: 600; background: var(--bg); color: var(--muted); transition: all .18s; white-space: nowrap; }
-    .tab:hover { border-color: var(--blue-light); color: var(--blue); background: #eef4ff; }
-    .tab.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 3px 10px rgba(26,78,138,.3); }
-    .tab-admin { padding: 7px 16px; border: 2px solid var(--border); border-radius: 25px; cursor: pointer; font-size: .85rem; font-weight: 600; background: var(--bg); color: var(--muted); transition: all .18s; white-space: nowrap; }
-    .tab-admin:hover { border-color: #e07820; color: var(--orange); background: #fff8f0; }
-    .tab-admin.active { background: var(--orange); border-color: var(--orange); color: #fff; box-shadow: 0 3px 10px rgba(184,92,0,.3); }
-    .tabs-admin { display: flex; flex-wrap: wrap; gap: 8px; }
+    /* filtros genéricos */
+    .ftab { padding: 8px 16px; border: 2px solid var(--border); border-radius: 25px; cursor: pointer; font-size: .85rem; font-weight: 600; background: var(--bg); color: var(--muted); transition: all .18s; white-space: nowrap; }
+    .ftab:hover { opacity: .85; }
+    /* admin = laranja */
+    .ftab-admin.active { background: var(--orange); border-color: var(--orange); color: #fff; box-shadow: 0 3px 10px rgba(184,92,0,.3); }
+    .ftab-admin:not(.active):hover { border-color: var(--orange-light); color: var(--orange); background: #fff8f0; }
+    /* status = azul */
+    .ftab-status.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 3px 10px rgba(26,78,138,.3); }
+    .ftab-status:not(.active):hover { border-color: var(--blue-light); color: var(--blue); background: #eef4ff; }
+    /* segmento = verde */
+    .ftab-seg.active { background: #1a8a5a; border-color: #1a8a5a; color: #fff; box-shadow: 0 3px 10px rgba(26,138,90,.3); }
+    .ftab-seg:not(.active):hover { border-color: #27ae60; color: #1a8a5a; background: #edfaf3; }
+    .ftabs { display: flex; flex-wrap: wrap; gap: 8px; }
+    /* manter compatibilidade tab/tab-admin para não quebrar nada */
+    .tab { display: none; } .tabs { display: none; } .tabs-admin { display: none; } .tab-admin { display: none; }
     .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
     .stat { background: var(--white); border-radius: 10px; padding: 10px 18px; box-shadow: var(--shadow); font-size: .78rem; color: var(--muted); }
     .stat strong { display: block; font-size: 1.35rem; font-weight: 700; color: var(--blue); line-height: 1.1; }
@@ -116,20 +124,26 @@
   <div class="filter-section">
     <div class="filter-group">
       <span class="filter-label">Administradora</span>
-      <div class="tabs-admin">
-        <button class="tab-admin active" data-admin="todos"  onclick="setAdmin(this)">Todas</button>
-        <button class="tab-admin"        data-admin="itaú"   onclick="setAdmin(this)">Itaú</button>
-        <button class="tab-admin"        data-admin="magalu" onclick="setAdmin(this)">Magalu</button>
+      <div class="ftabs">
+        <button class="ftab ftab-admin active" data-admin="todos"  onclick="toggle('admin',this)">Todas</button>
+        <button class="ftab ftab-admin"        data-admin="itaú"   onclick="toggle('admin',this)">Itaú</button>
+        <button class="ftab ftab-admin"        data-admin="magalu" onclick="toggle('admin',this)">Magalu</button>
       </div>
     </div>
     <div class="filter-group">
-      <span class="filter-label">Situação &amp; Segmento</span>
-      <div class="tabs">
-        <button class="tab active" data-tab="todos"      onclick="setTab(this)">Todos</button>
-        <button class="tab"        data-tab="disponivel" onclick="setTab(this)">✅ Disponíveis</button>
-        <button class="tab"        data-tab="reservada"  onclick="setTab(this)">🔒 Reservadas</button>
-        <button class="tab"        data-tab="imovel"     onclick="setTab(this)">🏠 Imóvel</button>
-        <button class="tab"        data-tab="veiculo"    onclick="setTab(this)">🚗 Veículo</button>
+      <span class="filter-label">Situação</span>
+      <div class="ftabs">
+        <button class="ftab ftab-status active" data-status="todos"      onclick="toggle('status',this)">Todas</button>
+        <button class="ftab ftab-status"        data-status="disponivel" onclick="toggle('status',this)">✅ Disponíveis</button>
+        <button class="ftab ftab-status"        data-status="reservada"  onclick="toggle('status',this)">🔒 Reservadas</button>
+      </div>
+    </div>
+    <div class="filter-group">
+      <span class="filter-label">Segmento</span>
+      <div class="ftabs">
+        <button class="ftab ftab-seg active" data-seg="todos"   onclick="toggle('seg',this)">Todos</button>
+        <button class="ftab ftab-seg"        data-seg="imovel"  onclick="toggle('seg',this)">🏠 Imóvel</button>
+        <button class="ftab ftab-seg"        data-seg="veiculo" onclick="toggle('seg',this)">🚗 Veículo</button>
       </div>
     </div>
   </div>
@@ -1179,33 +1193,59 @@
 </footer>
 
 <script>
-let activeTab   = 'todos';
-let activeAdmin = 'todos';
+// Conjuntos de filtros activos por grupo (vazio = todos)
+const sel = { admin: new Set(), status: new Set(), seg: new Set() };
 
-function setTab(btn) {
-  activeTab = btn.dataset.tab;
-  document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
+function norm(s) {
+  return s.normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+}
+
+function toggle(group, btn) {
+  const val = btn.dataset[group];
+  if (val === 'todos') {
+    // Limpa o grupo inteiro
+    sel[group].clear();
+  } else {
+    // Alterna o item
+    if (sel[group].has(val)) {
+      sel[group].delete(val);
+    } else {
+      sel[group].add(val);
+    }
+  }
+  // Atualiza visual do grupo
+  const cls = { admin: 'ftab-admin', status: 'ftab-status', seg: 'ftab-seg' }[group];
+  document.querySelectorAll('.' + cls).forEach(b => {
+    const v = b.dataset[group];
+    if (v === 'todos') {
+      b.classList.toggle('active', sel[group].size === 0);
+    } else {
+      b.classList.toggle('active', sel[group].has(v));
+    }
+  });
   render();
 }
-function setAdmin(btn) {
-  activeAdmin = btn.dataset.admin;
-  document.querySelectorAll('.tab-admin').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  render();
-}
+
 function render() {
   let visible = 0;
   document.querySelectorAll('.card').forEach(card => {
-    const seg    = card.dataset.seg    || '';
-    const status = card.dataset.status || '';
-    const name   = card.querySelector('.admin-name')?.textContent.toLowerCase() || '';
+    const cardSeg    = norm(card.dataset.seg    || '');
+    const cardStatus = card.dataset.status || '';
+    const cardAdmin  = norm(card.querySelector('.admin-name')?.textContent || '');
     let show = true;
-    if (activeTab === 'disponivel' && status !== 'disponivel') show = false;
-    if (activeTab === 'reservada'  && status !== 'reservada')  show = false;
-    if (activeTab === 'imovel'     && !seg.includes('im'))     show = false;
-    if (activeTab === 'veiculo'    && !seg.includes('ve'))     show = false;
-    if (activeAdmin !== 'todos'    && !name.includes(activeAdmin)) show = false;
+
+    // Filtro admin: OR dentro do grupo
+    if (sel.admin.size > 0 && !sel.admin.has(cardAdmin)) show = false;
+
+    // Filtro status: OR dentro do grupo
+    if (sel.status.size > 0 && !sel.status.has(cardStatus)) show = false;
+
+    // Filtro segmento: OR dentro do grupo
+    if (sel.seg.size > 0) {
+      const matchSeg = [...sel.seg].some(s => cardSeg.includes(s === 'imovel' ? 'im' : 've'));
+      if (!matchSeg) show = false;
+    }
+
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   });
