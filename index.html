@@ -30,19 +30,17 @@
 
     /* ── Barra de filtros ── */
     main { max-width: 1280px; margin: 0 auto; padding: 20px 16px 40px; }
-    .filter-section { background: var(--white); border-radius: 14px; box-shadow: var(--shadow); padding: 14px 16px; margin-bottom: 20px; }
-    .filter-top { display: flex; gap: 10px; align-items: center; margin-bottom: 12px; flex-wrap: wrap; }
-    .filter-title { font-size: .7rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
-    .search-wrap { flex: 1; min-width: 180px; max-width: 320px; position: relative; }
-    .search-wrap input { width: 100%; padding: 9px 14px 9px 36px; border: 1.5px solid var(--border); border-radius: 8px; font-size: .88rem; outline: none; background: var(--bg); color: var(--text); transition: border-color .2s; }
-    .search-wrap input:focus { border-color: var(--blue-light); background: #fff; }
-    .search-wrap::before { content: '🔍'; position: absolute; left: 11px; top: 50%; transform: translateY(-50%); font-size: .8rem; pointer-events: none; }
-    .tabs-scroll { overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; }
-    .tabs-scroll::-webkit-scrollbar { display: none; }
-    .tabs { display: flex; gap: 8px; padding-bottom: 2px; }
-    .tab { padding: 9px 18px; border: 2px solid var(--border); border-radius: 25px; cursor: pointer; font-size: .88rem; font-weight: 600; background: var(--bg); color: var(--muted); transition: all .18s; white-space: nowrap; flex-shrink: 0; }
+    .filter-section { background: var(--white); border-radius: 14px; box-shadow: var(--shadow); padding: 16px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 14px; }
+    .filter-group { display: flex; flex-direction: column; gap: 8px; }
+    .filter-label { font-size: .68rem; font-weight: 700; color: var(--muted); text-transform: uppercase; letter-spacing: .07em; }
+    .tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tab { padding: 8px 16px; border: 2px solid var(--border); border-radius: 25px; cursor: pointer; font-size: .85rem; font-weight: 600; background: var(--bg); color: var(--muted); transition: all .18s; white-space: nowrap; }
     .tab:hover { border-color: var(--blue-light); color: var(--blue); background: #eef4ff; }
-    .tab.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 3px 10px rgba(26,78,138,.35); }
+    .tab.active { background: var(--blue); border-color: var(--blue); color: #fff; box-shadow: 0 3px 10px rgba(26,78,138,.3); }
+    .tab-admin { padding: 7px 16px; border: 2px solid var(--border); border-radius: 25px; cursor: pointer; font-size: .85rem; font-weight: 600; background: var(--bg); color: var(--muted); transition: all .18s; white-space: nowrap; }
+    .tab-admin:hover { border-color: #e07820; color: var(--orange); background: #fff8f0; }
+    .tab-admin.active { background: var(--orange); border-color: var(--orange); color: #fff; box-shadow: 0 3px 10px rgba(184,92,0,.3); }
+    .tabs-admin { display: flex; flex-wrap: wrap; gap: 8px; }
     .stats { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 20px; }
     .stat { background: var(--white); border-radius: 10px; padding: 10px 18px; box-shadow: var(--shadow); font-size: .78rem; color: var(--muted); }
     .stat strong { display: block; font-size: 1.35rem; font-weight: 700; color: var(--blue); line-height: 1.1; }
@@ -81,19 +79,16 @@
     .disclaimer { background: #fff8e1; border-left: 3px solid var(--accent); border-radius: 6px; padding: 10px 14px; font-size: .76rem; color: #5a4000; margin-top: 28px; line-height: 1.5; }
     footer { text-align: center; padding: 24px; font-size: .75rem; color: var(--muted); border-top: 1px solid var(--border); margin-top: 32px; }
     @media (max-width: 640px) {
-      header { padding: 12px 16px; }
-      .brand-logo { height: 38px; }
-      .brand-title { font-size: .88rem; }
-      .brand-sub { display: none; }
-      .header-badge { display: none; }
-      #last-updated { font-size: .65rem; }
-      .filter-top { flex-direction: column; align-items: stretch; }
-      .search-wrap { max-width: 100%; }
-      .tab { padding: 8px 14px; font-size: .82rem; }
+      header { padding: 10px 14px; }
+      .brand-logo { height: 36px; }
+      .brand-text { display: none; }
+      .header-right { display: none; }
+      .tab { padding: 7px 13px; font-size: .8rem; }
+      .tab-admin { padding: 7px 13px; font-size: .8rem; }
       .grid { grid-template-columns: 1fr; }
       .stats { gap: 8px; }
-      .stat { padding: 8px 14px; }
-      .stat strong { font-size: 1.15rem; }
+      .stat { padding: 8px 12px; }
+      .stat strong { font-size: 1.1rem; }
     }
   </style>
 </head>
@@ -119,13 +114,16 @@
 
 <main>
   <div class="filter-section">
-    <div class="filter-top">
-      <span class="filter-title">Filtrar por</span>
-      <div class="search-wrap">
-        <input type="text" id="search" placeholder="Buscar administradora…" oninput="render()">
+    <div class="filter-group">
+      <span class="filter-label">Administradora</span>
+      <div class="tabs-admin">
+        <button class="tab-admin active" data-admin="todos"  onclick="setAdmin(this)">Todas</button>
+        <button class="tab-admin"        data-admin="itaú"   onclick="setAdmin(this)">Itaú</button>
+        <button class="tab-admin"        data-admin="magalu" onclick="setAdmin(this)">Magalu</button>
       </div>
     </div>
-    <div class="tabs-scroll">
+    <div class="filter-group">
+      <span class="filter-label">Situação &amp; Segmento</span>
       <div class="tabs">
         <button class="tab active" data-tab="todos"      onclick="setTab(this)">Todos</button>
         <button class="tab"        data-tab="disponivel" onclick="setTab(this)">✅ Disponíveis</button>
@@ -1181,15 +1179,22 @@
 </footer>
 
 <script>
-let activeTab = 'todos';
+let activeTab   = 'todos';
+let activeAdmin = 'todos';
+
 function setTab(btn) {
   activeTab = btn.dataset.tab;
   document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
   render();
 }
+function setAdmin(btn) {
+  activeAdmin = btn.dataset.admin;
+  document.querySelectorAll('.tab-admin').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  render();
+}
 function render() {
-  const q = (document.getElementById('search').value || '').toLowerCase().trim();
   let visible = 0;
   document.querySelectorAll('.card').forEach(card => {
     const seg    = card.dataset.seg    || '';
@@ -1200,7 +1205,7 @@ function render() {
     if (activeTab === 'reservada'  && status !== 'reservada')  show = false;
     if (activeTab === 'imovel'     && !seg.includes('im'))     show = false;
     if (activeTab === 'veiculo'    && !seg.includes('ve'))     show = false;
-    if (q && !name.includes(q) && !seg.includes(q))           show = false;
+    if (activeAdmin !== 'todos'    && !name.includes(activeAdmin)) show = false;
     card.style.display = show ? '' : 'none';
     if (show) visible++;
   });
