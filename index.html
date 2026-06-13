@@ -114,7 +114,7 @@
       </div>
     </div>
     <div class="header-right">
-      <span class="header-badge">34 cotas disponíveis</span>
+      <span class="header-badge">16 disponíveis · 18 reservadas</span>
       <span id="last-updated">Atualizado em 13/06/2026 às 10:00</span>
     </div>
   </div>
@@ -1201,7 +1201,7 @@ function norm(s) {
 }
 
 function toggle(group, btn) {
-  const val = btn.dataset[group];
+  const val = norm(btn.dataset[group]);
   if (val === 'todos') {
     // Limpa o grupo inteiro
     sel[group].clear();
@@ -1216,7 +1216,7 @@ function toggle(group, btn) {
   // Atualiza visual do grupo
   const cls = { admin: 'ftab-admin', status: 'ftab-status', seg: 'ftab-seg' }[group];
   document.querySelectorAll('.' + cls).forEach(b => {
-    const v = b.dataset[group];
+    const v = norm(b.dataset[group]);
     if (v === 'todos') {
       b.classList.toggle('active', sel[group].size === 0);
     } else {
