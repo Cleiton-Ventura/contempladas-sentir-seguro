@@ -17,6 +17,14 @@
     }
     body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; }
 
+
+    /* ── Oferta do Dia ── */
+    .card-oferta { position: relative; border: 2px solid #e07820; overflow: visible; }
+    .oferta-ribbon { position: absolute; top: -1px; left: -1px; right: -1px; background: linear-gradient(135deg, #b85c00, #e07820); color: #fff; text-align: center; font-size: .72rem; font-weight: 800; letter-spacing: .1em; padding: 5px 0; border-radius: 12px 12px 0 0; z-index: 3; text-transform: uppercase; }
+    .row-ja-pago { background: #edfaf3; border-radius: 8px; padding: 6px 10px; margin-top: 6px; }
+    .row-ja-pago .row-label { color: #1a8a5a; font-weight: 700; }
+    .row-ja-pago .row-val { color: #1a8a5a; font-weight: 800; }
+
     /* ── Header ── */
     header { background: linear-gradient(135deg, #0f3460 0%, var(--blue) 50%, var(--blue-light) 100%); color: #fff; padding: 16px 24px; position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,.25); }
     .header-inner { max-width: 1280px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
@@ -1114,7 +1122,7 @@
     </a>
 </div>
 </div>
-<div class="card" data-seg="imóvel" data-status="disponivel">
+<div class="card card-oferta" data-seg="imóvel" data-status="disponivel"><div class="oferta-ribbon">🔥 Oferta do Dia</div>
 <div class="card-top">
 <div class="card-admin">
 <img alt="Magalu" class="admin-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" src="https://contemplasul.contempladas.net/public/media/images/logos/administradoras/magalu.png"/>
@@ -1131,10 +1139,10 @@
 <div class="divider"></div>
 <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 76.496,48</span></div>
 <div class="row"><span class="row-label">Parcelas</span><span class="row-val">190 x R$ 831,38</span></div>
-<div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 106.755,60</span></div>
+<div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 157.962,20</span></div>
 <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 2.000,00</span></div>
 <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
-</div>
+<div class="row row-ja-pago"><span class="row-label">🎁 Já pago pelo proprietário</span><span class="row-val">R$ 51.206,60</span></div></div>
 <div class="card-foot">
 <button class="btn-share" onclick="shareCard(this)" title="Compartilhar"><svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>Compartilhar</button>
 <a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&amp;text=Ol%C3%A1%21%20Tenho%20interesse%20nesta%20Carta%20Contemplada%3A%0A%0AAdministradora%3A%20Magalu%0AC%C3%B3digo%3A%20101%0ASegmento%3A%20Im%C3%B3vel%0ACr%C3%A9dito%3A%20R%24%20165.465%2C13%0AEntrada%3A%20R%24%2076.496%2C48%0AParcelas%3A%20190%20x%20R%24%20831%2C38%0ASaldo%20devedor%3A%20R%24%20106.755%2C60%0APr%C3%B3x.%20vencimento%3A%2020/06/2026" rel="noopener" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"></path></svg>
@@ -1142,7 +1150,7 @@
     </a>
 </div>
 </div>
-<div class="card" data-seg="imóvel" data-status="disponivel">
+<div class="card card-oferta" data-seg="imóvel" data-status="disponivel"><div class="oferta-ribbon">🔥 Oferta do Dia</div>
 <div class="card-top">
 <div class="card-admin">
 <img alt="Magalu" class="admin-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" src="https://contemplasul.contempladas.net/public/media/images/logos/administradoras/magalu.png"/>
@@ -1159,10 +1167,10 @@
 <div class="divider"></div>
 <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 79.653,34</span></div>
 <div class="row"><span class="row-label">Parcelas</span><span class="row-val">190 x R$ 833,31</span></div>
-<div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 104.597,39</span></div>
+<div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 158.328,90</span></div>
 <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 2.000,00</span></div>
 <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
-</div>
+<div class="row row-ja-pago"><span class="row-label">🎁 Já pago pelo proprietário</span><span class="row-val">R$ 53.731,51</span></div></div>
 <div class="card-foot">
 <button class="btn-share" onclick="shareCard(this)" title="Compartilhar"><svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>Compartilhar</button>
 <a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&amp;text=Ol%C3%A1%21%20Tenho%20interesse%20nesta%20Carta%20Contemplada%3A%0A%0AAdministradora%3A%20Magalu%0AC%C3%B3digo%3A%20102%0ASegmento%3A%20Im%C3%B3vel%0ACr%C3%A9dito%3A%20R%24%20163.372%2C91%0AEntrada%3A%20R%24%2079.653%2C34%0AParcelas%3A%20190%20x%20R%24%20833%2C31%0ASaldo%20devedor%3A%20R%24%20104.597%2C39%0APr%C3%B3x.%20vencimento%3A%2020/06/2026" rel="noopener" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"></path></svg>
@@ -1170,7 +1178,7 @@
     </a>
 </div>
 </div>
-<div class="card" data-seg="imóvel" data-status="disponivel">
+<div class="card card-oferta" data-seg="imóvel" data-status="disponivel"><div class="oferta-ribbon">🔥 Oferta do Dia</div>
 <div class="card-top">
 <div class="card-admin">
 <img alt="Magalu" class="admin-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" src="https://contemplasul.contempladas.net/public/media/images/logos/administradoras/magalu.png"/>
@@ -1187,10 +1195,10 @@
 <div class="divider"></div>
 <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 91.155,09</span></div>
 <div class="row"><span class="row-label">Parcelas</span><span class="row-val">166 x R$ 897,60</span></div>
-<div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 86.642,55</span></div>
+<div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 149.001,60</span></div>
 <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 2.000,00</span></div>
 <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
-</div>
+<div class="row row-ja-pago"><span class="row-label">🎁 Já pago pelo proprietário</span><span class="row-val">R$ 62.359,05</span></div></div>
 <div class="card-foot">
 <button class="btn-share" onclick="shareCard(this)" title="Compartilhar"><svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>Compartilhar</button>
 <a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&amp;text=Ol%C3%A1%21%20Tenho%20interesse%20nesta%20Carta%20Contemplada%3A%0A%0AAdministradora%3A%20Magalu%0AC%C3%B3digo%3A%20103%0ASegmento%3A%20Im%C3%B3vel%0ACr%C3%A9dito%3A%20R%24%20168.138%2C83%0AEntrada%3A%20R%24%2091.155%2C09%0AParcelas%3A%20166%20x%20R%24%20897%2C60%0ASaldo%20devedor%3A%20R%24%2086.642%2C55%0APr%C3%B3x.%20vencimento%3A%2020/06/2026" rel="noopener" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"></path></svg>
@@ -1198,7 +1206,7 @@
     </a>
 </div>
 </div>
-<div class="card" data-seg="imóvel" data-status="disponivel">
+<div class="card card-oferta" data-seg="imóvel" data-status="disponivel"><div class="oferta-ribbon">🔥 Oferta do Dia</div>
 <div class="card-top">
 <div class="card-admin">
 <img alt="Magalu" class="admin-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" src="https://contemplasul.contempladas.net/public/media/images/logos/administradoras/magalu.png"/>
@@ -1215,10 +1223,10 @@
 <div class="divider"></div>
 <div class="row"><span class="row-label">Entrada</span><span class="row-val highlight">R$ 85.972,57</span></div>
 <div class="row"><span class="row-label">Parcelas</span><span class="row-val">176 x R$ 851,75</span></div>
-<div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 91.262,11</span></div>
+<div class="row"><span class="row-label">Saldo devedor</span><span class="row-val">R$ 149.908,00</span></div>
 <div class="row"><span class="row-label">Transferência</span><span class="row-val">R$ 1.500,00</span></div>
 <div class="row"><span class="row-label">Próx. vencimento</span><span class="row-val">20/06/2026</span></div>
-</div>
+<div class="row row-ja-pago"><span class="row-label">🎁 Já pago pelo proprietário</span><span class="row-val">R$ 58.645,89</span></div></div>
 <div class="card-foot">
 <button class="btn-share" onclick="shareCard(this)" title="Compartilhar"><svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>Compartilhar</button>
 <a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&amp;text=Ol%C3%A1%21%20Tenho%20interesse%20nesta%20Carta%20Contemplada%3A%0A%0AAdministradora%3A%20Magalu%0AC%C3%B3digo%3A%20104%0ASegmento%3A%20Im%C3%B3vel%0ACr%C3%A9dito%3A%20R%24%20162.215%2C23%0AEntrada%3A%20R%24%2085.972%2C57%0AParcelas%3A%20176%20x%20R%24%20851%2C75%0ASaldo%20devedor%3A%20R%24%2091.262%2C11%0APr%C3%B3x.%20vencimento%3A%2020/06/2026" rel="noopener" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"></path></svg>
