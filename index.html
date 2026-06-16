@@ -128,8 +128,8 @@
 </div>
 </div>
 <div class="header-right">
-<span class="header-badge">19 disponíveis · 15 reservadas</span>
-<span id="last-updated">Atualizado em 16/06/2026 às 10:30</span>
+<span class="header-badge">17 disponíveis · 17 reservadas</span>
+<span id="last-updated">Atualizado em 16/06/2026 às 21:50</span>
 </div>
 </div>
 </header>
@@ -139,7 +139,6 @@
 <span class="filter-label">Administradora</span>
 <div class="ftabs">
 <button class="ftab ftab-admin active" data-admin="todos" onclick="toggle('admin',this)">Todas</button>
-
 <button class="ftab ftab-admin" data-admin="magalu" onclick="toggle('admin',this)">Magalu</button>
 </div>
 </div>
@@ -161,8 +160,8 @@
 </div>
 </div>
 <div class="stats"><div class="stat"><strong>34</strong>Total</div>
-<div class="stat"><strong>19</strong>Disponíveis</div>
-<div class="stat stat-resv"><strong>15</strong>Reservadas</div>
+<div class="stat"><strong>17</strong>Disponíveis</div>
+<div class="stat stat-resv"><strong>17</strong>Reservadas</div>
 <div class="stat"><strong>9</strong>Imóveis</div>
 <div class="stat"><strong>25</strong>Veículos</div>
 <div class="stat" id="stat-exibindo"><strong>34</strong>Exibindo</div>
@@ -703,8 +702,8 @@
     </a>
 </div>
 </div>
-<div class="card" data-seg="veículo" data-status="disponivel">
-<div class="card-top">
+<div class="card" data-seg="veículo" data-status="reservada">
+<div class="card-top card-top-reservada">
 <div class="card-admin">
 <img alt="Magalu" class="admin-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" src="https://contemplasul.contempladas.net/public/media/images/logos/administradoras/magalu.png"/>
 <div class="admin-fallback" style="display:none">M</div>
@@ -712,7 +711,7 @@
 </div>
 <div class="card-badges">
 <span class="badge badge-seg">🏠 Imóvel</span>
-<span class="badge badge-disp">✓ Disponível</span>
+<span class="badge badge-res">🔒 Reservada</span>
 </div>
 </div>
 <div class="card-body">
@@ -727,13 +726,13 @@
 </div>
 <div class="card-foot">
 <button class="btn-share" onclick="shareCard(this)" title="Compartilhar"><svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>Compartilhar</button>
-<a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&amp;text=Ol%C3%A1%21%20Tenho%20interesse%20nesta%20Carta%20Contemplada%3A%0A%0AAdministradora%3A%20Magalu%0AC%C3%B3digo%3A%20586%0ASegmento%3A%20Im%C3%B3vel%0ACr%C3%A9dito%3A%20R%24%2037.400%2C00%0AEntrada%3A%20R%24%2016.022%2C00%0AParcelas%3A%2073%20x%20R%24%20622%2C92%0ASaldo%20devedor%3A%20R%24%2045.473%2C16%0APr%C3%B3x.%20vencimento%3A%2020/06/2026" rel="noopener" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"></path></svg>
-      Negociar no WhatsApp
+<a class="btn-wpp btn-espera" href="#" onclick="return false;"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"></path></svg>
+      🔒 Carta Reservada
     </a>
 </div>
 </div>
-<div class="card" data-seg="veículo" data-status="disponivel">
-<div class="card-top">
+<div class="card" data-seg="veículo" data-status="reservada">
+<div class="card-top card-top-reservada">
 <div class="card-admin">
 <img alt="Magalu" class="admin-logo" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'" src="https://contemplasul.contempladas.net/public/media/images/logos/administradoras/magalu.png"/>
 <div class="admin-fallback" style="display:none">M</div>
@@ -741,7 +740,7 @@
 </div>
 <div class="card-badges">
 <span class="badge badge-seg">🏠 Imóvel</span>
-<span class="badge badge-disp">✓ Disponível</span>
+<span class="badge badge-res">🔒 Reservada</span>
 </div>
 </div>
 <div class="card-body">
@@ -756,8 +755,8 @@
 </div>
 <div class="card-foot">
 <button class="btn-share" onclick="shareCard(this)" title="Compartilhar"><svg fill="none" height="16" stroke="currentColor" stroke-width="2.5" viewbox="0 0 24 24" width="16"><circle cx="18" cy="5" r="3"></circle><circle cx="6" cy="12" r="3"></circle><circle cx="18" cy="19" r="3"></circle><line x1="8.59" x2="15.42" y1="13.51" y2="17.49"></line><line x1="15.41" x2="8.59" y1="6.51" y2="10.49"></line></svg>Compartilhar</button>
-<a class="btn-wpp" href="https://api.whatsapp.com/send?phone=5583987253467&amp;text=Ol%C3%A1%21%20Tenho%20interesse%20nesta%20Carta%20Contemplada%3A%0A%0AAdministradora%3A%20Magalu%0AC%C3%B3digo%3A%20684%0ASegmento%3A%20Im%C3%B3vel%0ACr%C3%A9dito%3A%20R%24%2014.470%2C00%0AEntrada%3A%20R%24%206.334%2C10%0AParcelas%3A%2066%20x%20R%24%20283%2C66%0ASaldo%20devedor%3A%20R%24%2018.721%2C56%0APr%C3%B3x.%20vencimento%3A%2020/06/2026" rel="noopener" target="_blank"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"></path></svg>
-      Negociar no WhatsApp
+<a class="btn-wpp btn-espera" href="#" onclick="return false;"><svg fill="currentColor" height="18" viewbox="0 0 24 24" width="18"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"></path><path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.121 1.532 5.849L.057 23.527a.75.75 0 0 0 .916.916l5.68-1.476A11.934 11.934 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.75a9.718 9.718 0 0 1-4.95-1.354l-.355-.212-3.68.955.98-3.574-.23-.368A9.72 9.72 0 0 1 2.25 12C2.25 6.615 6.615 2.25 12 2.25S21.75 6.615 21.75 12 17.385 21.75 12 21.75z"></path></svg>
+      🔒 Carta Reservada
     </a>
 </div>
 </div>
